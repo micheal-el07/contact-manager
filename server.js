@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const asyncHandler = require("express-async-handler");
 
 const { router } = require("./routers");
-const { PORT, MONGO_URL } = require("./config/env.config");
+const { PORT, MONGO_URL } = require("./configs/env.config");
 const bodyParser = require("body-parser");
 
 const app = express();
