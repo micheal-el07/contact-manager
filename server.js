@@ -10,7 +10,7 @@ const bodyParser = require("body-parser");
 const app = express();
 
 app.use(express.json());
-app.use.bodyParser(bodyParser.urlencoded({ extended: false }));
+app.use.bodyParser(bodyParser.urlencoded({ extended: true }));
 
 // Create connection to mongodb atlas
 mongoose
@@ -23,9 +23,11 @@ mongoose
   });
 
 // GET placeholder
-app.get("/", (req, res) => {
-  res.send("Hey");
-});
+// app.get("/", (req, res) => {
+//   res.send("Hey");
+// });
+
+app.use("/api", router)
 
 // Throwing 404 error for invalid endpoint
 app.all("*", (req, res) => {
