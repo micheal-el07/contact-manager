@@ -5,12 +5,11 @@ const asyncHandler = require("express-async-handler");
 
 const { router } = require("./routers");
 const { PORT, MONGO_URL } = require("./configs/env.config");
-const bodyParser = require("body-parser");
 
 const app = express();
 
 app.use(express.json());
-app.use.bodyParser(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Create connection to mongodb atlas
 mongoose
@@ -27,7 +26,7 @@ mongoose
 //   res.send("Hey");
 // });
 
-app.use("/api", router)
+app.use("/api", router);
 
 // Throwing 404 error for invalid endpoint
 app.all("*", (req, res) => {
