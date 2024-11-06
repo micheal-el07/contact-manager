@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { User } = require("../models/user.model");
 
 const Schema = mongoose.Schema;
 
@@ -10,18 +11,18 @@ const contactSchema = new Schema(
       required: true,
     },
     name: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     email: {
-        type: String,
-        required: true,
-        unique: true,
+      type: String,
+      required: true,
+      unique: true,
     },
     phone: {
-        type: String,
-        required: true,
-        unique: true,
+      type: String,
+      required: true,
+      unique: true,
     },
   },
   { timestamps: true }
