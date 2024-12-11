@@ -6,13 +6,21 @@ const addUserHandler = expressAsyncHandler(async (req, res) => {
   const details = req.body;
 
   try {
+    console.log("in controller");
     const user = await addNewUser(details);
     // const contact = details;
+
+    if (!user.status) {
+      return res.status(409).json({
+        status: false,
+        message: "Contact already existed.",
+      });
+    }
 
     return res.status(200).json({
       status: true,
       message: "New contact added successfully.",
-      data: user,
+      data: user.data,
     });
   } catch (error) {
     throw error;

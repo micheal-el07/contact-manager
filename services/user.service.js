@@ -2,17 +2,19 @@ const { User } = require("../models/user.model");
 
 const addNewUser = async (newUser) => {
   try {
-    const user = newUser
-    // const user = await User.create(newUser);
+    console.log("in service");
+    // const user = newUser
+    const user = await User.create(newUser);
 
-    // if (!user) {
-    //   throw new Error("Error occur while creating user.");
-    // }
-
-    return user;
+    if (!user) {
+      throw new Error("Error occur while creating user.");
+    }
+    // return user;
+    return {status:true, data: user};
   } catch (error) {
     console.log({ message: "Error adding new user", error: error.message });
-    throw error;
+    return {status:false, message: "Error adding user to database"}
+    // throw error;
   }
 };
 
