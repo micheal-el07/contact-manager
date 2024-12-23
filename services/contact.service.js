@@ -10,12 +10,15 @@ const addNewContact = async (newUser) => {
 
     return contact;
   } catch (error) {
-    console.log({ message: "Error adding new contact", error: error.message });
-    throw error;
+    console.log({
+      message: "Error occured in contact services, addNewContact function.",
+      error: error.message,
+    });
+    throw Error(error);
   }
 };
 
-const getContact = async (searchParam) => {
+const getContacts = async (searchParam) => {
   try {
     const contacts = await Contact.find(searchParam);
 
@@ -29,9 +32,40 @@ const getContact = async (searchParam) => {
 
     return contacts;
   } catch (error) {
-    console.log({ message: "Error fetching contacts", error: error.message });
-    throw error;
+    console.log({
+      message: "Error occured in contact services, getContacts function.",
+      error: error.message,
+    });
+    throw Error(error);
   }
 };
 
-module.export = { addNewContact, getContact };
+const updateContact = async (id, details) => {
+  try {
+    const updated = await Contact.findByIdAndUpdate(id, details);
+
+    return updated;
+  } catch (error) {
+    console.log({
+      message: "Error occured in contact services, editContact function.",
+      error: error.message,
+    });
+    throw Error(error);
+  }
+};
+
+const deleteContact = async (searchParam) => {
+  try {
+    const contact = await Contact.deleteOne(searchParam);
+
+    return contact;
+  } catch (error) {
+    console.log({
+      message: "Error occured in contact services, deleteContact function.",
+      error: error.message,
+    });
+    throw Error(error);
+  }
+};
+
+module.exports = { addNewContact, getContacts, updateContact, deleteContact };
