@@ -1,5 +1,5 @@
 const errorHandler = (err, req, res, next) => {
-  console.log("Error catched in errorHandler.");
+  console.log("Error occured in server.");
   res.status(500).json({
     success: false,
     message: "Error occured during the process.",
