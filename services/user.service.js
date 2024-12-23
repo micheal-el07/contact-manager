@@ -1,5 +1,14 @@
 const { User } = require("../models/user.model");
 
+const userIdList = async () => {
+  try {
+    const users = await User.find();
+    console.log(users);
+  } catch (error) {
+    throw Error(error);
+  }
+};
+
 const addNewUser = async (newUser) => {
   try {
     console.log("in service");
@@ -10,17 +19,16 @@ const addNewUser = async (newUser) => {
       throw new Error("Error occur while creating user.");
     }
     // return user;
-    return {status:true, data: user};
+    return { status: true, data: user };
   } catch (error) {
-    console.log({ message: "Error adding new user", error: error.message });
-    return {status:false, message: "Error adding user to database"}
-    // throw error;
+    console.log({ message: "Error occured in user services, addNewUser function.", error: error.message });
+    throw Error(error);
   }
 };
 
 const getUsers = async (searchParam) => {
   try {
-    const users = await User.find(searchParam); 
+    const users = await User.find(searchParam);
 
     if (users.length === 0) {
       return null;
@@ -32,10 +40,9 @@ const getUsers = async (searchParam) => {
 
     return users;
   } catch (error) {
-    console.log({ message: "Error fetching users", error: error.message });
-    throw error;
+    console.log({ message: "Error occured in user services, getUsers function.", error: error.message });
+    throw Error(error);
   }
 };
 
-
-module.exports = { addNewUser, getUsers };
+module.exports = { addNewUser, getUsers, userIdList };
