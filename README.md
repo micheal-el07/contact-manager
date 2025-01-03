@@ -7,8 +7,10 @@ Build using NodeJS, JavaScript, MongoDB Atlas as database and accessed by using 
 Goals
 
 • Users can register for their account.
+
 • Once registration is successful, users can login to their account and manage
 their contacts.
+
 • Users can create, update, delete, get all contacts or get a single contact which
 they have created.
 • Prevent users from managing contacts of different users.
