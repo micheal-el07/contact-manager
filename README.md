@@ -5,6 +5,7 @@ Contact manager is a backend system that allow user to add, view, edit and delet
 Build using NodeJS, JavaScript, MongoDB Atlas as database and accessed by using REST API.
 
 Goals
+
 • Users can register for their account.
 • Once registration is successful, users can login to their account and manage
 their contacts.
