@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const { findOneUser } = require("../services/user.service");
 const { User } = require("../models/user.model");
 const { ACCESS_TOKEN_SECERT } = require("../configs/env.config");
 
@@ -14,7 +13,7 @@ const handleLogin = async (req, res, next) => {
       message: "Bad request. Username and password are required.",
     });
 
-  const foundUser = await User.find({ username:username });
+  const foundUser = await User.find({ username: username });
   console.log(foundUser);
   if (!foundUser)
     return res.status(404).json({
@@ -25,7 +24,6 @@ const handleLogin = async (req, res, next) => {
   // Evaluate password
   const match = await bcrypt.compare(password, foundUser[0].password);
   if (match) {
-    // create jwt
     const accessToken = jwt.sign({ username: username }, ACCESS_TOKEN_SECERT, {
       expiresIn: "1d",
     });
@@ -37,10 +35,6 @@ const handleLogin = async (req, res, next) => {
       }
     );
 
-    // res.cookie("jwt", accessToken, {
-    //   httpOnly: true,
-    //   maxAge: 5 * 60 * 1000,
-    // });
     res.json({
       status: "success",
       mesage: `User ${username} successfully logged in.`,
