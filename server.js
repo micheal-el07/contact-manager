@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const asyncHandler = require("express-async-handler");
+const redis = require("redis");
 
 const { router } = require("./routers");
 const { PORT, MONGO_URL } = require("./configs/env.config");
@@ -21,16 +21,20 @@ mongoose
     console.log(error);
   });
 
-// GET placeholder
-// app.get("/", (req, res) => {
-//   res.send("Hey");
-// });
-
 app.use("/api", router);
 
 // Throwing 404 error for invalid endpoint
 app.all("*", (req, res) => {
-  res.status(404).json({ status: "failed", message: "Invalid endpoint" });
+  try {
+    res.status(404).json({ status: "failed", message: "Invalid endpoint" });
+  } catch (error) {
+    return res.status(500).json({
+      status: false,
+      location: "server.js",
+      message: "Internal server error.",
+      error: error,
+    });
+  }
 });
 
 app.listen(PORT, () => {
