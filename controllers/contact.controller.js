@@ -1,6 +1,8 @@
 const expressAsyncHandler = require("express-async-handler");
 const { Contact } = require("../models/contact.model");
 const { User } = require("../models/user.model");
+
+const mongoose = require("mongoose");
 const {
   getContacts,
   addNewContact,
@@ -8,7 +10,6 @@ const {
   updateContact,
 } = require("../services/contact.service");
 const { getUsers } = require("../services/user.service");
-const { get } = require("mongoose");
 
 const addContactHandler = expressAsyncHandler(async (req, res) => {
   const details = req.body;
@@ -30,28 +31,10 @@ const addContactHandler = expressAsyncHandler(async (req, res) => {
     }
 
     const contact = await addNewContact({ ...details, user: id });
-    // const contact = details;
-
-    // return res.status(200).json({
-    //   status: true,
-    //   message: "New contact added successfully.",
-    //   data: contact,
-    // });
 
     if (!contact) {
       throw new Error("Error in adding contact");
     }
-
-    //   // Create a new contact with the user reference
-    //   const newContact = new Contact({
-    //     user: details.id, // Reference to the user ID
-    //     name: details.name,
-    //     email: details.email,
-    //     phone: details.phone,
-    //   });
-
-    //   // Save the contact to the database
-    //   await newContact.save();
 
     return res.status(201).json({
       status: true,
@@ -59,7 +42,12 @@ const addContactHandler = expressAsyncHandler(async (req, res) => {
       data: contact,
     });
   } catch (error) {
-    throw error;
+    return res.status(500).json({
+      status: false,
+      location: "controllers/contact/addContactHandler",
+      message: "Internal server error.",
+      error: error,
+    });
   }
 });
 
@@ -77,7 +65,12 @@ const getAllContactHandler = expressAsyncHandler(async (req, res) => {
       data: contacts,
     });
   } catch (error) {
-    throw error;
+    return res.status(500).json({
+      status: false,
+      location: "controllers/contact/getAllContactHandler",
+      message: "Internal server error.",
+      error: error,
+    });
   }
 });
 
@@ -86,6 +79,13 @@ const getContactByIdHandler = expressAsyncHandler(async (req, res) => {
   const username = req.user.username;
 
   try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        status: false,
+        message: "Invalid ID!",
+      });
+    }
+
     const findRequestedId = await getUsers({ _id: id });
 
     if (!findRequestedId) {
@@ -101,7 +101,6 @@ const getContactByIdHandler = expressAsyncHandler(async (req, res) => {
         message: "Unauthorized",
       });
     }
-
     const contacts = await getContacts({ user: id });
 
     if (!contacts) {
@@ -110,14 +109,18 @@ const getContactByIdHandler = expressAsyncHandler(async (req, res) => {
         message: "No contacts found.",
       });
     }
-
     return res.status(200).json({
       status: true,
       message: "Contact fetched successfully",
       data: contacts,
     });
   } catch (error) {
-    throw Error(error);
+    return res.status(500).json({
+      status: false,
+      location: "controllers/contact/getContactByIdHandler",
+      message: "Internal server error.",
+      error: error.message,
+    });
   }
 });
 
@@ -126,6 +129,13 @@ const updateContactByIdHandler = expressAsyncHandler(async (req, res) => {
   const updateDetails = req.body;
 
   try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        status: false,
+        message: "Invalid ID!",
+      });
+    }
+
     const contact = await updateContact(id, updateDetails);
 
     if (!contact) {
@@ -138,30 +148,40 @@ const updateContactByIdHandler = expressAsyncHandler(async (req, res) => {
       .status(200)
       .json({ status: true, message: "Contact updated", data: contact });
   } catch (error) {
-    throw Error(error);
+    return res.status(500).json({
+      status: false,
+      location: "controllers/contact/updateContactByIdHandler",
+      message: "Internal server error.",
+      error: error,
+    });
   }
 });
 
 const deleteContactByIdHandler = expressAsyncHandler(async (req, res) => {
-  // Id to be deleted
   const id = req.params.id;
-
-  // Username of current user
   const username = req.user.username;
-  console.log(username, "currently login");
 
   try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        status: false,
+        message: "Invalid ID!",
+      });
+    }
+
     const currentUserDocument = await getUsers({ username: username });
-    console.log(currentUserDocument);
-    // const findRequestedId = await getUsers({ username: });
     const contact = await deleteContact({ _id: id });
-    console.log(contact);
 
     res
       .status(200)
       .json({ status: true, message: "Contact successfully deleted." });
   } catch (error) {
-    throw Error(error);
+    return res.status(500).json({
+      status: false,
+      location: "controllers/contact/deleteContactByIdHandler",
+      message: "Internal server error.",
+      error: error,
+    });
   }
 });
 
