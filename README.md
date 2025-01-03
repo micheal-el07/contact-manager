@@ -4,10 +4,11 @@ Desc:
 Contact manager is a backend system that allow user to add, view, edit and delete user's contacts.
 Build using NodeJS, JavaScript, MongoDB Atlas as database and accessed by using REST API.
 
-Goals<br />
-• Users can register for their account.<br />
+Goals
+• Users can register for their account.
 • Once registration is successful, users can login to their account and manage
 their contacts.
+
 • Users can create, update, delete, get all contacts or get a single contact which
 they have created.
 • Prevent users from managing contacts of different users.
@@ -33,20 +34,45 @@ To do:
 11. Give JWT upon successful login
 
 API Endpoint:
-/api/user :
-GET:
 
-POST:
+/api/register:
 
-UPDATE:
+(Public) POST : Registering new user for the system.
 
-DELETE:
 
-/api/contact :
-GET:
+/api/login:
 
-POST:
+(Public) POST : Login into the system, token will be given for every successful login.
 
-UPDATE:
 
-DELETE:
+/api/user:
+
+(Private) GET: Retrieve lists of all users
+
+(Private) POST: 
+
+(Private) UPDATE:
+
+(Private) DELETE:
+
+
+/api/contact:
+
+(Private) GET: Retrieve all of the contacts
+
+(Private) POST:
+
+(Private) UPDATE:
+
+(Private) DELETE:
+
+
+/api/contact/id:
+
+(Private) GET: Get all contacts for the specified ID
+
+(Private) POST: 
+
+(Private) UPDATE: Update the contacts of the specified ID
+
+(Private) DELETE: Delete the contact of the specified ID
