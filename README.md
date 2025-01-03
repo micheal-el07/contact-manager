@@ -40,9 +40,11 @@ API Endpoint:
 
 (Public) POST : Registering new user for the system.
 
+
 /api/login:
 
 (Public) POST : Login into the system, token will be given for every successful login.
+
 
 /api/user:
 
@@ -54,6 +56,7 @@ API Endpoint:
 
 (Private) DELETE:
 
+
 /api/contact:
 
 (Private) GET: Retrieve all of the contacts
@@ -63,6 +66,7 @@ API Endpoint:
 (Private) UPDATE:
 
 (Private) DELETE:
+
 
 /api/contact/id:
 
