@@ -1,4 +1,5 @@
 const { Contact } = require("../models/contact.model");
+const client = require("../utils/redis.utils");
 
 const addNewContact = async (newUser) => {
   try {
@@ -10,15 +11,18 @@ const addNewContact = async (newUser) => {
 
     return contact;
   } catch (error) {
-    console.log({
-      message: "Error occured in contact services, addNewContact function.",
-      error: error.message,
+    return res.status(500).json({
+      status: false,
+      location: "services/contact/addNewContact",
+      message: "Internal server error.",
+      error: error,
     });
-    throw Error(error);
   }
 };
 
 const getContacts = async (searchParam) => {
+  const key = searchParam.user;
+
   try {
     const contacts = await Contact.find(searchParam);
 
@@ -32,11 +36,12 @@ const getContacts = async (searchParam) => {
 
     return contacts;
   } catch (error) {
-    console.log({
-      message: "Error occured in contact services, getContacts function.",
-      error: error.message,
+    return res.status(500).json({
+      status: false,
+      location: "services/contact/getContacts",
+      message: "Internal server error.",
+      error: error,
     });
-    throw Error(error);
   }
 };
 
@@ -46,11 +51,12 @@ const updateContact = async (id, details) => {
 
     return updated;
   } catch (error) {
-    console.log({
-      message: "Error occured in contact services, editContact function.",
-      error: error.message,
+    return res.status(500).json({
+      status: false,
+      location: "services/contact/editContact",
+      message: "Internal server error.",
+      error: error,
     });
-    throw Error(error);
   }
 };
 
@@ -60,11 +66,12 @@ const deleteContact = async (searchParam) => {
 
     return contact;
   } catch (error) {
-    console.log({
-      message: "Error occured in contact services, deleteContact function.",
-      error: error.message,
+    return res.status(500).json({
+      status: false,
+      location: "services/contact/deleteContact",
+      message: "Internal server error.",
+      error: error,
     });
-    throw Error(error);
   }
 };
 
