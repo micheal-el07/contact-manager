@@ -5,24 +5,30 @@ const userIdList = async () => {
     const users = await User.find();
     console.log(users);
   } catch (error) {
-    throw Error(error);
+    return res.status(500).json({
+      status: false,
+      location: "services/user/userIdList",
+      message: "Internal server error.",
+      error: error,
+    });
   }
 };
 
 const addNewUser = async (newUser) => {
   try {
-    console.log("in service");
-    // const user = newUser
     const user = await User.create(newUser);
 
     if (!user) {
       throw new Error("Error occur while creating user.");
     }
-    // return user;
     return { status: true, data: user };
   } catch (error) {
-    console.log({ message: "Error occured in user services, addNewUser function.", error: error.message });
-    throw Error(error);
+    return res.status(500).json({
+      status: false,
+      location: "services/user/addNewUser",
+      message: "Internal server error.",
+      error: error,
+    });
   }
 };
 
@@ -40,8 +46,12 @@ const getUsers = async (searchParam) => {
 
     return users;
   } catch (error) {
-    console.log({ message: "Error occured in user services, getUsers function.", error: error.message });
-    throw Error(error);
+    return res.status(500).json({
+      status: false,
+      location: "services/user/getUsers",
+      message: "Internal server error.",
+      error: error,
+    });
   }
 };
 
