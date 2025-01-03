@@ -23,7 +23,14 @@ const addNewContact = async (newUser) => {
 const getContacts = async (searchParam) => {
   const key = searchParam.user;
 
+  const cachedResults = await client.get(key);
   try {
+
+    if (cachedResults) {
+      console.log("Cache hit");
+      return JSON.parse(cachedResults);
+    }
+    
     const contacts = await Contact.find(searchParam);
 
     if (contacts.length === 0) {
@@ -33,6 +40,9 @@ const getContacts = async (searchParam) => {
     if (!contacts) {
       throw new Error("Error occur while fetching contacts.");
     }
+  
+    await client.set(key, JSON.stringify(contacts), { EX: 300 });
+    console.log("Cache miss");
 
     return contacts;
   } catch (error) {
