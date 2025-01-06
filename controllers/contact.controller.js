@@ -52,8 +52,12 @@ const addContactHandler = expressAsyncHandler(async (req, res) => {
 });
 
 const getAllContactHandler = expressAsyncHandler(async (req, res) => {
+  const username = req.user;
   try {
-    const contacts = await getContacts();
+    const user = await getUsers({username: username.username});
+    const id = user[0]._id.toString();
+
+    const contacts = await getContacts({user:id});
 
     if (contacts === null) {
       return res.status(404).json({ status: false, message: "No user found" });
@@ -69,7 +73,7 @@ const getAllContactHandler = expressAsyncHandler(async (req, res) => {
       status: false,
       location: "controllers/contact/getAllContactHandler",
       message: "Internal server error.",
-      error: error,
+      error: error.message,
     });
   }
 });

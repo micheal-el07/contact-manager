@@ -25,7 +25,7 @@ const handleLogin = async (req, res, next) => {
   const match = await bcrypt.compare(password, foundUser[0].password);
   if (match) {
     const accessToken = jwt.sign({ username: username }, ACCESS_TOKEN_SECERT, {
-      expiresIn: "1d",
+      expiresIn: "5m",
     });
     const refreshToken = jwt.sign(
       { username: username },
